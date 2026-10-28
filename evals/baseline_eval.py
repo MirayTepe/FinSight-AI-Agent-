@@ -9,6 +9,10 @@ import json
 import os
 import sys
 
+# Ensure UTF-8 output on Windows consoles
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 # Sample data path
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "sample_financials.json")
 
