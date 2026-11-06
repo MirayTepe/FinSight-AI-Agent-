@@ -1,19 +1,11 @@
-"""
-FinSight M0 Baseline Evaluation Script
---------------------------------------
-Bu script, 10 adet finansal test sorusu üzerinde Tek LLM Çağrısı (Baseline)
-ile Deterministik Tool / Ground Truth yanıtlarını karşılaştırır.
-"""
 
 import json
 import os
 import sys
 
-# Ensure UTF-8 output on Windows consoles
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-# Sample data path
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "sample_financials.json")
 
 GOLDEN_QUESTIONS = [
@@ -100,14 +92,9 @@ GOLDEN_QUESTIONS = [
 ]
 
 def simulate_baseline_llm(question):
-    """
-    Tek bir LLM çağrısının (dış tool ve RAG kullanmadan, kendi paramedrik bilgisiyle)
-    finansal sorulardaki tipik davranış simülasyonu.
-    """
-    # Tek LLM; canlı veriye erişemez, kesin küsuratlı hesap yapamaz ve kaynak gösteremez.
     return {
-        "numeric_accuracy": False,  # Hallucination veya genel/eski bilgi riski
-        "citation_provided": False, # Her iddiada kaynak kimliği yok
+        "numeric_accuracy": False,                                             
+        "citation_provided": False,                                 
         "reason": "Tek LLM canlı borsa fiyatına, güncel KAP bildirimine ve küsuratlı bilanço verisine doğrudan erişemez."
     }
 

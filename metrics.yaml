@@ -1,0 +1,185 @@
+# =============================================================================
+# FinSight — SEC EDGAR XBRL Metrik ve Etiket Öncelik Konfigürasyonu (metrics.yaml)
+# =============================================================================
+# Ders 9: SEC EDGAR XBRL companyfacts verilerindeki etiket değişimleri,
+# birim doğrulamaları ve finansal oran (rasyo) formül tanımları.
+
+version: "1.0"
+description: "US-GAAP XBRL etiket öncelik haritası, birim kuralları ve finansal hesaplama formülleri"
+
+metrics:
+  # ---------------------------------------------------------------------------
+  # 1. GELİR (REVENUE / NET SALES)
+  # ---------------------------------------------------------------------------
+  revenue:
+    name: "Total Revenue / Net Sales"
+    statement: "income_statement"
+    period_type: "duration"
+    expected_unit: "USD"
+    allowed_units: ["USD", "EUR", "GBP"]
+    # Apple (AAPL) ve diğer ABD şirketlerindeki etiket evrimi:
+    # 2018 öncesi: SalesRevenueNet
+    # Bazı raporlar/ara dönemler: Revenues
+    # ASC 606 standardı sonrası: RevenueFromContractWithCustomerExcludingAssessedTax
+    tags_priority:
+      - "RevenueFromContractWithCustomerExcludingAssessedTax"
+      - "SalesRevenueNet"
+      - "Revenues"
+      - "RevenueFromContractWithCustomerIncludingAssessedTax"
+      - "SalesRevenueServicesNet"
+      - "SalesRevenueGoodsNet"
+    description: "Ana faaliyetlerden elde edilen net hasılat. ASC 606 standartı önceliklidir."
+
+  # ---------------------------------------------------------------------------
+  # 2. SATILAN MALIN MALİYETİ (COGS)
+  # ---------------------------------------------------------------------------
+  cost_of_revenue:
+    name: "Cost of Goods and Services Sold"
+    statement: "income_statement"
+    period_type: "duration"
+    expected_unit: "USD"
+    allowed_units: ["USD", "EUR", "GBP"]
+    tags_priority:
+      - "CostOfGoodsAndServicesSold"
+      - "CostOfGoodsSold"
+      - "CostOfServices"
+    description: "Satılan mal ve hizmetlerin doğrudan maliyeti."
+
+  # ---------------------------------------------------------------------------
+  # 3. BRÜT KÂR (GROSS PROFIT)
+  # ---------------------------------------------------------------------------
+  gross_profit:
+    name: "Gross Profit"
+    statement: "income_statement"
+    period_type: "duration"
+    expected_unit: "USD"
+    allowed_units: ["USD", "EUR", "GBP"]
+    tags_priority:
+      - "GrossProfit"
+    fallback_formula: "revenue - cost_of_revenue"
+    description: "Hasılat ile satılan malın maliyeti arasındaki brüt kâr tutarı."
+
+  # ---------------------------------------------------------------------------
+  # 4. BRÜT KÂR MARJI (GROSS MARGIN %)
+  # ---------------------------------------------------------------------------
+  gross_margin:
+    name: "Gross Profit Margin"
+    statement: "calculated"
+    period_type: "ratio"
+    expected_unit: "%"
+    formula: "(gross_profit / revenue) * 100"
+    dependencies: ["gross_profit", "revenue"]
+    description: "Brüt kârın toplama gelire oranı (yüzde bazında)."
+
+  # ---------------------------------------------------------------------------
+  # 5. FAALİYET KÂRI (OPERATING INCOME / EBIT)
+  # ---------------------------------------------------------------------------
+  operating_income:
+    name: "Operating Income (Loss)"
+    statement: "income_statement"
+    period_type: "duration"
+    expected_unit: "USD"
+    allowed_units: ["USD", "EUR", "GBP"]
+    tags_priority:
+      - "OperatingIncomeLoss"
+    fallback_formula: "gross_profit - operating_expenses"
+    description: "Esas faaliyet kârı / zararı (EBIT)."
+
+  # ---------------------------------------------------------------------------
+  # 6. FAALİYET MARJI (OPERATING MARGIN %)
+  # ---------------------------------------------------------------------------
+  operating_margin:
+    name: "Operating Profit Margin"
+    statement: "calculated"
+    period_type: "ratio"
+    expected_unit: "%"
+    formula: "(operating_income / revenue) * 100"
+    dependencies: ["operating_income", "revenue"]
+    description: "Faaliyet kârının toplama gelire oranı (yüzde bazında)."
+
+  # ---------------------------------------------------------------------------
+  # 7. NET KÂR (NET INCOME)
+  # ---------------------------------------------------------------------------
+  net_income:
+    name: "Net Income (Loss) Attributable to Parent"
+    statement: "income_statement"
+    period_type: "duration"
+    expected_unit: "USD"
+    allowed_units: ["USD", "EUR", "GBP"]
+    tags_priority:
+      - "NetIncomeLoss"
+      - "ProfitLoss"
+      - "NetIncomeLossAvailableToCommonStockholdersBasic"
+    description: "Dönem net kârı veya zararı."
+
+  # ---------------------------------------------------------------------------
+  # 8. NET KÂR MARJI (NET MARGIN %)
+  # ---------------------------------------------------------------------------
+  net_margin:
+    name: "Net Profit Margin"
+    statement: "calculated"
+    period_type: "ratio"
+    expected_unit: "%"
+    formula: "(net_income / revenue) * 100"
+    dependencies: ["net_income", "revenue"]
+    description: "Dönem net kârının toplam gelire oranı (yüzde bazında)."
+
+  # ---------------------------------------------------------------------------
+  # 9. HİSSE BAŞINA KÂR (DILUTED EPS)
+  # ---------------------------------------------------------------------------
+  eps_diluted:
+    name: "Earnings Per Share (Diluted)"
+    statement: "income_statement"
+    period_type: "duration"
+    expected_unit: "USD/shares"
+    allowed_units: ["USD/shares"]
+    tags_priority:
+      - "EarningsPerShareDiluted"
+    description: "Seyreltilmiş hisse başına net kâr."
+
+  # ---------------------------------------------------------------------------
+  # 10. TEDAVÜLDEKİ HİSSE SAYISI (SHARES OUTSTANDING)
+  # ---------------------------------------------------------------------------
+  shares_outstanding:
+    name: "Common Stock Shares Outstanding"
+    statement: "balance_sheet"
+    period_type: "instant"
+    expected_unit: "shares"
+    allowed_units: ["shares"]
+    tags_priority:
+      - "CommonStockSharesOutstanding"
+      - "WeightedAverageNumberOfDilutedSharesOutstanding"
+    description: "Tedavüldeki adi hisse senedi sayısı."
+
+  # ---------------------------------------------------------------------------
+  # 11. BİLEŞİK YILLIK BÜYÜME ORANI (CAGR %)
+  # ---------------------------------------------------------------------------
+  cagr:
+    name: "Compound Annual Growth Rate"
+    statement: "calculated"
+    period_type: "growth"
+    expected_unit: "%"
+    formula: "((end_value / start_value) ** (1 / periods) - 1) * 100"
+    parameters:
+      start_value: "İlk dönem metrik değeri (örn. 5 yıl önceki gelir)"
+      end_value: "Son dönem metrik değeri (örn. güncel yıl geliri)"
+      periods: "İki dönem arasındaki yıl farkı (n = end_year - start_year)"
+    validation_rules:
+      - "start_value > 0"
+      - "end_value > 0"
+      - "periods >= 1"
+    description: "Yıllıklandırılmış geometrik büyüme oranı."
+
+# -----------------------------------------------------------------------------
+# FORMLAR VE REVİZYON TERCİHLERİ
+# -----------------------------------------------------------------------------
+form_priority:
+  annual:
+    - "10-K/A" # Düzeltilmiş yıllık rapor (en yüksek öncelik)
+    - "10-K"   # Orijinal yıllık rapor
+    - "20-F/A" # Yabancı ihraççı yıllık düzeltme
+    - "20-F"   # Yabancı ihraççı yıllık
+  quarterly:
+    - "10-Q/A" # Düzeltilmiş çeyreklik rapor
+    - "10-Q"   # Orijinal çeyreklik rapor
+

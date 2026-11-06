@@ -1,1 +1,0 @@
-# FinSight - Kaynak Kod Paketi

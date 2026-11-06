@@ -1,0 +1,20 @@
+{
+  "_comment": "Claude Desktop MCP Konfigürasyonu — FinSight Financial Tools",
+  "_docs": "Bu dosya genellikle şu konumdadır: %APPDATA%\\Claude\\claude_desktop_config.json",
+
+  "mcpServers": {
+    "finsight": {
+      "command": "C:\\Users\\tepem\\OneDrive\\Desktop\\multigroupco-AI-Agents-Bootcamp\\FinSight\\venv\\Scripts\\python.exe",
+      "args": [
+        "-m",
+        "src.mcp_server"
+      ],
+      "cwd": "C:\\Users\\tepem\\OneDrive\\Desktop\\multigroupco-AI-Agents-Bootcamp\\FinSight",
+      "env": {
+        "PYTHONPATH": "C:\\Users\\tepem\\OneDrive\\Desktop\\multigroupco-AI-Agents-Bootcamp\\FinSight",
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  }
+}
+

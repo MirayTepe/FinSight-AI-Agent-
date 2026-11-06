@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinSight AI — Dashboard</title>
+<style>
+/* ═══════════════ RESET & FOUNDATIONS ═══════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-primary:   #0f1117;
+  --bg-secondary: #161922;
+  --bg-card:      #1c1f2e;
+  --bg-input:     #252836;
+  --border:       #2d3148;
+  --text:         #e1e4ed;
+  --text-muted:   #8b8fa7;
+  --accent:       #6c5ce7;
+  --accent-glow:  rgba(108, 92, 231, 0.25);
+  --green:        #00cec9;
+  --green-bg:     rgba(0, 206, 201, 0.12);
+  --orange:       #fdcb6e;
+  --orange-bg:    rgba(253, 203, 110, 0.12);
+  --red:          #ff7675;
+  --red-bg:       rgba(255, 118, 117, 0.12);
+  --blue:         #74b9ff;
+  --blue-bg:      rgba(116, 185, 255, 0.12);
+  --radius:       12px;
+  --radius-sm:    8px;
+  --shadow:       0 4px 24px rgba(0,0,0,0.35);
+  --font:         'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono:         'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg-primary);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════ TOP BAR ═══════════════ */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar .logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 1.15rem;
+}
+.topbar .logo svg { width: 28px; height: 28px; }
+.topbar .badge {
+  background: var(--accent-glow); color: var(--accent);
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.02em;
+}
+
+/* ═══════════════ QUERY BAR ═══════════════ */
+.query-bar {
+  display: flex; gap: 12px;
+  padding: 20px 28px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+.query-bar input {
+  flex: 1;
+  background: var(--bg-input); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 12px 16px; font-size: 0.95rem;
+  outline: none; transition: border-color 0.2s;
+}
+.query-bar input:focus { border-color: var(--accent); }
+.query-bar input::placeholder { color: var(--text-muted); }
+.query-bar button {
+  background: var(--accent); color: #fff; border: none;
+  border-radius: var(--radius-sm); padding: 12px 28px;
+  font-weight: 600; font-size: 0.95rem; cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.query-bar button:hover { opacity: 0.88; transform: translateY(-1px); }
+.query-bar button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ═══════════════ MAIN LAYOUT ═══════════════ */
+.main {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 0;
+  height: calc(100vh - 130px);
+}
+@media (max-width: 960px) {
+  .main { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+}
+
+/* ═══════════════ LEFT: REPORT PANEL ═══════════════ */
+.panel-left {
+  padding: 24px 28px;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+.panel-left h2 {
+  font-size: 1.1rem; color: var(--text-muted);
+  margin-bottom: 20px; font-weight: 500;
+}
+
+/* ── Ratio Cards ── */
+.ratios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.ratio-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  opacity: 0; animation: cardIn 0.4s ease forwards;
+}
+.ratio-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.ratio-card .label {
+  font-size: 0.75rem; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.ratio-card .value {
+  font-size: 1.6rem; font-weight: 700;
+  font-family: var(--mono);
+}
+.ratio-card .sub {
+  font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;
+}
+.ratio-card.green  .value { color: var(--green);  }
+.ratio-card.blue   .value { color: var(--blue);   }
+.ratio-card.orange .value { color: var(--orange); }
+.ratio-card.accent .value { color: var(--accent); }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Report ── */
+.report-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  line-height: 1.75;
+  font-size: 0.92rem;
+}
+.report-container h3 { color: var(--accent); margin: 16px 0 8px; font-size: 1rem; }
+.report-container table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; }
+.report-container th,
+.report-container td {
+  padding: 8px 12px; text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.report-container th { color: var(--text-muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
+
+/* ── Verdict Badge ── */
+.verdict-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px; border-radius: var(--radius-sm);
+  margin-bottom: 20px; font-weight: 600;
+}
+.verdict-bar.approved   { background: var(--green-bg);  color: var(--green); border: 1px solid rgba(0,206,201,0.3); }
+.verdict-bar.force      { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(253,203,110,0.3); }
+.verdict-bar.failed     { background: var(--red-bg);    color: var(--red); border: 1px solid rgba(255,118,117,0.3); }
+.verdict-bar .verdict-icon { font-size: 1.3rem; }
+
+/* ═══════════════ RIGHT: TRACE PANEL ═══════════════ */
+.panel-right {
+  padding: 24px 20px;
+  overflow-y: auto;
+  background: var(--bg-secondary);
+}
+.panel-right h2 {
+  font-size: 1.1rem; color: var(--text-muted);
+  margin-bottom: 16px; font-weight: 500;
+  display: flex; align-items: center; gap: 8px;
+}
+.panel-right h2 .pulse {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse 1.5s ease infinite;
+  display: none;
+}
+.panel-right h2 .pulse.active { display: inline-block; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* ── Step Cards ── */
+.step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  animation: stepSlide 0.35s ease;
+  font-size: 0.85rem;
+}
+@keyframes stepSlide {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.step-card .step-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 6px;
+}
+.step-card .agent-badge {
+  padding: 2px 8px; border-radius: 12px;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.step-card .agent-badge.data    { background: var(--blue-bg);   color: var(--blue); }
+.step-card .agent-badge.analyst { background: var(--accent-glow); color: var(--accent); }
+.step-card .agent-badge.critic  { background: var(--orange-bg); color: var(--orange); }
+.step-card .status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.step-card .status-dot.running  { background: var(--orange); animation: pulse 1s ease infinite; }
+.step-card .status-dot.success  { background: var(--green); }
+.step-card .status-dot.failed   { background: var(--red); }
+.step-card .step-summary {
+  color: var(--text-muted); line-height: 1.5;
+}
+.step-card .step-detail {
+  margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-family: var(--mono); font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.step-card .step-detail code {
+  color: var(--green); font-family: var(--mono);
+}
+
+/* ═══════════════ PLACEHOLDER ═══════════════ */
+.placeholder {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 100%; color: var(--text-muted);
+  text-align: center; gap: 12px;
+}
+.placeholder svg { width: 48px; height: 48px; opacity: 0.3; }
+.placeholder p { font-size: 0.9rem; max-width: 280px; }
+
+/* ═══════════════ SCROLLBAR ═══════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Kalıcı Yasal Uyarı Bandı (Ders 8 & Güvenlik/Uyum) -->
+<div class="disclaimer-banner" style="background: linear-gradient(90deg, #9a3412, #d97706); color: #ffffff; padding: 8px 16px; font-size: 12.5px; font-weight: 600; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; gap: 8px; z-index: 100;">
+  <span>⚠️</span>
+  <span><strong>YATIRIM TAVSİYESİ DEĞİLDİR:</strong> Bu platform yalnızca eğitim ve araştırma amaçlı bir prototiptir. Kesinlikle al/sat/tut önerisi veya hedef fiyat niteliği taşımaz.</span>
+</div>
+
+<!-- ════════ TOP BAR ════════ -->
+<header class="topbar">
+  <div class="logo">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="32" rx="8" fill="#6c5ce7"/>
+      <path d="M8 22V14l4-4 4 6 4-8 4 12" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    FinSight AI
+  </div>
+  <span class="badge">MULTI-AGENT DASHBOARD v1.0</span>
+</header>
+
+<!-- ════════ QUERY BAR ════════ -->
+<div class="query-bar">
+  <input type="text" id="ticker-input" placeholder="Hisse kodu girin (ornegin THYAO.IS, GARAN.IS, AAPL)" value="THYAO.IS" spellcheck="false">
+  <button id="analyze-btn" onclick="startAnalysis()">Analiz Baslat</button>
+</div>
+
+<!-- ════════ MAIN PANELS ════════ -->
+<div class="main">
+
+  <!-- SOL: Rapor + Rasyo Kartlari -->
+  <div class="panel-left" id="panel-left">
+    <div class="placeholder" id="left-placeholder">
+      <svg viewBox="0 0 48 48" fill="none"><rect x="4" y="8" width="40" height="32" rx="4" stroke="currentColor" stroke-width="2"/><path d="M12 28l6-8 6 4 6-10 6 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <p>Hisse kodu girip <strong>Analiz Baslat</strong>'a basin. Rasyo kartlari ve nihai rapor burada gorunecek.</p>
+    </div>
+    <div id="ratios-container" style="display:none">
+      <h2>Finansal Rasyolar</h2>
+      <div class="ratios-grid" id="ratios-grid"></div>
+    </div>
+    <div id="verdict-container" style="display:none"></div>
+    <div id="report-container" style="display:none">
+      <h2>Analiz Raporu</h2>
+      <div class="report-container" id="report-content"></div>
+    </div>
+  </div>
+
+  <!-- SAG: Canli Dusunce Izi -->
+  <div class="panel-right" id="panel-right">
+    <h2>
+      <span class="pulse" id="stream-pulse"></span>
+      Agent Dusunce Izi
+    </h2>
+    <div id="trace-container">
+      <div class="placeholder" id="right-placeholder">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/><path d="M24 14v10l7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <p>Agent adimlari burada canli olarak gorunecek.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   FinSight Dashboard — Vanilla JS, SSE Consumer
+   ═══════════════════════════════════════════════════ */
+
+const $  = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+let evtSource = null;
+let stepCount = 0;
+
+// ── ANALIZ BASLAT ──────────────────────────────────
+function startAnalysis() {
+  const ticker = $('#ticker-input').value.trim();
+  if (!ticker) return;
+
+  // UI reset
+  resetUI();
+  const btn = $('#analyze-btn');
+  btn.disabled = true;
+  btn.textContent = 'Analiz ediliyor...';
+  $('#stream-pulse').classList.add('active');
+  $('#right-placeholder').style.display = 'none';
+  $('#left-placeholder').style.display  = 'none';
+
+  // Onceki baglanti varsa kapat
+  if (evtSource) evtSource.close();
+
+  // SSE baglantisi
+  evtSource = new EventSource(`/api/analyze/stream?ticker=${encodeURIComponent(ticker)}`);
+
+  evtSource.addEventListener('step',    e => handleStep(JSON.parse(e.data)));
+  evtSource.addEventListener('ratios',  e => handleRatios(JSON.parse(e.data)));
+  evtSource.addEventListener('report',  e => handleReport(JSON.parse(e.data)));
+  evtSource.addEventListener('verdict', e => handleVerdict(JSON.parse(e.data)));
+  evtSource.addEventListener('error',   e => {
+    try { handleError(JSON.parse(e.data)); } catch(_) { handleError({message: 'Baglanti hatasi'}); }
+  });
+  evtSource.addEventListener('done', () => {
+    evtSource.close();
+    evtSource = null;
+    btn.disabled = false;
+    btn.textContent = 'Analiz Baslat';
+    $('#stream-pulse').classList.remove('active');
+  });
+  evtSource.onerror = () => {
+    evtSource.close();
+    evtSource = null;
+    btn.disabled = false;
+    btn.textContent = 'Analiz Baslat';
+    $('#stream-pulse').classList.remove('active');
+  };
+}
+
+// Enter tusu
+$('#ticker-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startAnalysis();
+});
+
+// ── UI RESET ────────────────────────────────────────
+function resetUI() {
+  stepCount = 0;
+  $('#trace-container').innerHTML = '';
+  $('#ratios-grid').innerHTML = '';
+  $('#report-content').innerHTML = '';
+  $('#ratios-container').style.display   = 'none';
+  $('#verdict-container').style.display  = 'none';
+  $('#report-container').style.display   = 'none';
+  $('#verdict-container').innerHTML      = '';
+}
+
+// ── STEP HANDLER ────────────────────────────────────
+function handleStep(data) {
+  stepCount++;
+  const agentClass = data.agent.includes('Data') ? 'data'
+                   : data.agent.includes('Analyst') ? 'analyst'
+                   : 'critic';
+
+  const detailHtml = data.details
+    ? `<div class="step-detail">${Object.entries(data.details).map(([k,v]) =>
+        `<div><code>${k}</code>: ${typeof v === 'object' ? JSON.stringify(v) : v}</div>`
+      ).join('')}</div>`
+    : '';
+
+  const card = document.createElement('div');
+  card.className = 'step-card';
+  card.innerHTML = `
+    <div class="step-header">
+      <span class="status-dot ${data.status}"></span>
+      <span class="agent-badge ${agentClass}">${data.agent}</span>
+      <span style="color: var(--text-muted); font-size: 0.75rem;">Tur ${data.round} &middot; #${stepCount}</span>
+    </div>
+    <div class="step-summary">${esc(data.summary)}</div>
+    ${detailHtml}
+  `;
+
+  const container = $('#trace-container');
+  container.appendChild(card);
+  // Otomatik scroll
+  container.scrollTop = container.scrollHeight;
+  // Panel scroll
+  $('#panel-right').scrollTop = $('#panel-right').scrollHeight;
+}
+
+// ── RATIOS HANDLER ──────────────────────────────────
+function handleRatios(data) {
+  const grid = $('#ratios-grid');
+  grid.innerHTML = '';
+  $('#ratios-container').style.display = 'block';
+
+  const cards = [
+    { label: 'Guncel Fiyat',   value: fmt(data.current_price, 2), sub: data.currency, color: 'blue'   },
+    { label: 'F/K Orani',      value: data.pe_ratio != null ? fmt(data.pe_ratio, 2) + 'x' : 'N/A',
+                                sub: 'Fiyat / Kazanc', color: 'green'  },
+    { label: 'PD/DD Orani',    value: data.pb_ratio != null ? fmt(data.pb_ratio, 2) + 'x' : 'N/A',
+                                sub: 'Piyasa D. / Defter D.', color: 'accent' },
+    { label: 'EPS',            value: fmt(data.eps, 2), sub: 'Hisse Basina Kar', color: 'orange' },
+    { label: 'Defter Degeri',  value: fmt(data.book_value, 2), sub: data.currency + ' / hisse', color: 'blue' },
+    { label: 'Piyasa Degeri',  value: fmtCap(data.market_cap), sub: data.currency, color: 'green' },
+  ];
+
+  cards.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = `ratio-card ${c.color}`;
+    el.style.animationDelay = `${i * 0.08}s`;
+    el.innerHTML = `
+      <div class="label">${c.label}</div>
+      <div class="value">${c.value}</div>
+      <div class="sub">${c.sub}</div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+// ── REPORT HANDLER ──────────────────────────────────
+function handleReport(data) {
+  $('#report-container').style.display = 'block';
+  $('#report-content').innerHTML = mdToHtml(data.markdown);
+}
+
+// ── VERDICT HANDLER ─────────────────────────────────
+function handleVerdict(data) {
+  const container = $('#verdict-container');
+  container.style.display = 'block';
+
+  let cls, icon, label;
+  if (data.decision.startsWith('APPROVED') && !data.decision.includes('FORCE')) {
+    cls = 'approved'; icon = '\u2713'; label = 'Onaylandi';
+    if (data.decision.includes('REVISION')) label += ` (${data.total_revision_rounds} revizyon sonrasi)`;
+  } else if (data.decision === 'FORCE_APPROVED') {
+    cls = 'force'; icon = '\u26A0'; label = `Kosullu Onay (${data.total_revision_rounds} revizyon)`;
+  } else {
+    cls = 'failed'; icon = '\u2717'; label = 'Basarisiz';
+  }
+
+  const cs = data.critic_summary || {};
+  container.innerHTML = `
+    <div class="verdict-bar ${cls}">
+      <span class="verdict-icon">${icon}</span>
+      <span>${label}</span>
+      <span style="margin-left:auto; font-size:0.8rem; opacity:0.8">
+        Dogrulama: ${cs.approval_rate || '-'} (${cs.total_checks || 0} kontrol)
+      </span>
+    </div>
+  `;
+}
+
+// ── ERROR HANDLER ───────────────────────────────────
+function handleError(data) {
+  const card = document.createElement('div');
+  card.className = 'step-card';
+  card.style.borderColor = 'var(--red)';
+  card.innerHTML = `
+    <div class="step-header">
+      <span class="status-dot failed"></span>
+      <span style="color: var(--red); font-weight: 600;">HATA</span>
+    </div>
+    <div class="step-summary" style="color: var(--red);">${esc(data.message)}</div>
+  `;
+  $('#trace-container').appendChild(card);
+}
+
+// ── YARDIMCILAR ─────────────────────────────────────
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+function fmt(n, d) {
+  if (n == null || isNaN(n)) return 'N/A';
+  return Number(n).toLocaleString('tr-TR', { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+
+function fmtCap(n) {
+  if (!n) return 'N/A';
+  n = Number(n);
+  if (n >= 1e12) return fmt(n / 1e12, 1) + ' Trilyon';
+  if (n >= 1e9)  return fmt(n / 1e9, 1)  + ' Milyar';
+  if (n >= 1e6)  return fmt(n / 1e6, 1)  + ' Milyon';
+  return fmt(n, 0);
+}
+
+// Basit Markdown -> HTML donusturucu
+function mdToHtml(md) {
+  if (!md) return '';
+  return md
+    // Tablolar
+    .replace(/^\|(.+)\|$/gm, (_, row) => {
+      const cells = row.split('|').map(c => c.trim());
+      return '<tr>' + cells.map(c =>
+        c.match(/^-+$/) ? '' : `<td>${c}</td>`
+      ).join('') + '</tr>';
+    })
+    // Basliklar
+    .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
+    .replace(/^### (.+)$/gm,  '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,   '<h3>$1</h3>')
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    // Listeler
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    // Paragraflar
+    .replace(/\n\n/g, '</p><p>')
+    // Table wrapper
+    .replace(/<tr>/g, (m, offset, str) => {
+      // Ilk <tr> oncesine <table> ekle
+      const before = str.substring(0, offset);
+      if (!before.includes('<table>') || before.lastIndexOf('</table>') > before.lastIndexOf('<table>'))
+        return '<table>' + m;
+      return m;
+    })
+    // Bosluklari temizle
+    .replace(/(<\/tr>\s*)(?!<tr>)/g, '$1</table>')
+    // Bos satirlari at
+    .replace(/<tr><\/tr>/g, '');
+}
+</script>
+</body>
+</html>
+

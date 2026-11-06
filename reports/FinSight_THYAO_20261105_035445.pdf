@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>FinSight Memo - THYAO</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #1e293b; padding: 40px; }
+h1, h2, h3 { color: #0f172a; }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+th { background: #f1f5f9; }
+blockquote { background: #f8fafc; border-left: 4px solid #3b82f6; padding: 10px 20px; margin: 15px 0; }
+.disclaimer { background: #fffbeb; border: 1px solid #fef3c7; color: #92400e; padding: 15px; border-radius: 6px; margin-top: 30px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div style="background:#2563eb; color:#fff; padding:15px; border-radius:6px; margin-bottom:20px;">
+  <h2 style="margin:0; color:#fff;">FinSight Araştırma Raporu (PDF Export)</h2>
+</div>
+<pre style="white-space: pre-wrap; font-family: inherit;">
+# 📊 FinSight Analist İlk Bakış Notu: THYAO (THYAO)
+**Tarih:** 05.11.2026 03:54 | **Kapsam:** SEC EDGAR 10-K & KAP Bildirimleri | **Versiyon:** FinSight Multi-Agent v2.0
+
+---
+## 1. 📈 Temel Finansal Göstergeler ve Marj Trendi (XBRL Verisi)
+| Metrik | Değer | Karşılaştırma / Trend | Resmi Kaynak |
+| :--- | :--- | :--- | :--- |
+| **2024 Q2 Gelir** | 295.0 Milyar TL | Büyüme | `sample_financials.json` |
+| **Brüt Kâr Marjı** | %21.8 | -170 bps | `THYAO 2024 Q2 KAP` |
+| **Faaliyet Marjı** | %16.5 | -170 bps | `THYAO 2024 Q2 KAP` |
+| **Net Kâr Marjı** | %12.7 | Daralma | `THYAO 2024 Q2 KAP` |
+| **Borç / Özkaynak** | 0.8519 | %85.19 | `Bilanço Dipnotu` |
+
+---
+## 2. 🔍 Niteliksel Bulgular, Yönetim Görüşü ve Risk Faktörleri (Item 1A / MD&A / KAP)
+### 📌 Esas Faaliyet Kârı Baskılanması (KAP Açıklaması)
+> 2024 2. çeyreğinde yolcu sayısı %4.3 artarak 40.6 milyona ulaşmasına rağmen, akaryakıt giderlerindeki artış ve jet yakıtı crack spread yükselişi operasyonel marjları baskılamıştır.
+
+*Resmi Referans:* `KAP-2024-001 (2024 2. Çeyrek Finansal Sonuçları - 2024-08-12)`
+
+### 📌 Filo Genişletme & Yeni Uçak Alım Görüşmeleri (KAP Açıklaması)
+> Filo genişletme stratejisi doğrultusunda Airbus ve Boeing ile 2026-2033 teslimatlı geniş gövdeli (wide-body) uçak alımı için müzakereler sürmektedir.
+
+*Resmi Referans:* `KAP-2024-002 (Yeni Uçak Siparişi Görüşmeleri - 2024-09-15)`
+
+---
+## 3. ⏱️ Observability & Denetim Özeti
+- **Toplam Gecikme:** 287.88 ms
+- **Kullanılan Token:** 1420 token
+- **Hesaplanan Maliyet:** $0.000465
+- **Çoklu Ajan Adım Sayısı:** 5 adım
+- **Sayısal Denetim Toleransı:** %1.0 (NumberVerifier: Onaylandı)
+
+---
+> ⚖️ **YASAL UYARI & METODOLOJİ BİLDİRİMİ:**
+> Bu rapor, kamuya açık SEC EDGAR XBRL verileri ve 10-K yıllık bildirimleri kullanılarak **eğitim ve akademik araştırma amaçlı** bir prototip tarafından üretilmiştir.
+> Burada yer alan analizler, hesaplanan finansal rasyolar, büyüme oranları ve özetler **kesinlikle yatırım danışmanlığı, al/sat/tut tavsiyesi veya hedef fiyat niteliği taşımaz**.
+> 6362 sayılı Sermaye Piyasası Kanunu ve ilgili mevzuat uyarınca yatırım kararları yalnızca yetkili lisanslı yatırım danışmanları ve onaylı resmi izahnameler doğrultusunda verilmelidir.
+
+</pre>
+</body>
+</html>
