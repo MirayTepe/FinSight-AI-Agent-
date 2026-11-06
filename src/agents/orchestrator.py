@@ -410,23 +410,27 @@ class OrchestratorPlanner:
         sections_found: List[str] = []
         if any(k in q_lower for k in ["risk", "tehdit", "risk factor", "jeopolitik", "belirsizlik"]):
             sections_found.append("item_1a")
-        if any(k in q_lower for k in ["yönetim", "md&a", "discussion", "faaliyet raporu", "analiz"]):
+        if any(k in q_lower for k in ["yönetim", "md&a", "discussion", "faaliyet raporu", "analiz", "bağlıyor", "açıklama"]):
             sections_found.append("item_7")
-        if any(k in q_lower for k in ["iş modeli", "business", "ürün", "hizmet"]):
+        if any(k in q_lower for k in ["iş modeli", "business", "ürün", "hizmet", "segment", "segmentler", "iş kolu", "iş kolları", "faaliyet", "kaynak"]):
             sections_found.append("item_1")
 
         has_comparison = (
             len(found_tickers) >= 2
-            or any(k in q_lower for k in ["karşılaştır", "kıyasla", "compare", "vs", "versus"])
+            or any(k in q_lower for k in ["karşılaştır", "kıyasla", "compare", "vs", "versus", "kıyas", "sektöründeki"])
         )
 
         numerical_keywords = [
-            "gelir", "revenue", "satış", "marj", "cagr", "büyüme", "kâr", "kar",
-            "margin", "eps", "f/k", "pe", "rasyo", "rakam", "oran"
+            "hasılat", "ciro", "brüt marj", "faaliyet marjı", "net marj", "cagr",
+            "büyüme", "kâr marjı", "margin", "eps", "f/k", "pe", "rasyo", "rakam", "oran",
+            "ne kadar", "kaçtır", "sayısal", "yıllık hasılat"
         ]
         textual_keywords = [
             "risk", "tedarik zinciri", "supply chain", "dava", "regülasyon",
-            "antitröst", "yönetim görüşü", "neden", "açıkla", "anlatım", "strateji"
+            "antitröst", "yönetim görüşü", "yönetim", "neden", "açıkla", "anlatım", "strateji",
+            "iş kolu", "iş kolları", "segment", "segmentler", "kaynak", "kaynakları",
+            "dağılım", "dağılımı", "faaliyet", "faaliyetler", "hizmet", "hizmetler",
+            "hangi", "nasıl", "kim", "nelerdir", "özet", "açıklaması", "bağlıyor", "trend"
         ]
 
         has_num = any(k in q_lower for k in numerical_keywords)

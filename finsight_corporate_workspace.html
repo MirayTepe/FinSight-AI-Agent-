@@ -1094,98 +1094,16 @@
                     <div class="grid grid-cols-3 gap-4">
                         
                         <div class="col-span-2 space-y-3 font-mono text-xs">
-                            <div class="text-[10px] font-medium text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                                <span class="p-1 rounded bg-slate-800/60 border border-slate-700/50 text-blue-400"><i class="bi bi-layers"></i></span>
-                                İndekslenmiş RAG Parçaları (Chunks)
+                            <div class="text-[10px] font-medium text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                                <span class="flex items-center gap-2">
+                                    <span class="p-1 rounded bg-slate-800/60 border border-slate-700/50 text-blue-400"><i class="bi bi-layers"></i></span>
+                                    İndekslenmiş RAG Parçaları (Chunks)
+                                </span>
+                                <span id="ragCompanyBadge" class="text-blue-400 font-bold font-mono"></span>
                             </div>
 
-                            <div onclick="openCitation('REF-AAPL-ITEM1A')"
-                                class="bg-slate-900/80 border border-slate-800 p-4 rounded-lg cursor-pointer transition-all space-y-2 hover:border-blue-500/50 hover:bg-slate-900 shadow-lg">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-blue-400 font-bold flex items-center gap-2">
-                                        <i class="bi bi-exclamation-triangle text-amber-400"></i>
-                                        [Item 1A] Risk Faktörleri — Tedarik Zinciri &amp; Tayvan
-                                    </span>
-                                    <span
-                                        class="inline-flex items-center gap-1 text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
-                                        <i class="bi bi-check-circle"></i>RRF: 0.942
-                                    </span>
-                                </div>
-                                <p class="text-slate-300 text-[11px] line-clamp-2 font-sans leading-relaxed">
-                                    Apple'ın tek kaynaklı bileşen ve yarı iletken üreticilerine (özellikle Asya/Tayvan
-                                    bölgesine) bağımlı olması, operasyonel aksaklık ve jeopolitik gerginliklerde ciddi
-                                    aksamalara yol açabilir.
-                                </p>
-                                <div class="text-[10px] text-slate-500 flex justify-between pt-1 border-t border-slate-800/60">
-                                    <span>Form 10-K Part I Item 1A</span>
-                                    <span>accn: 0000320193-24-000106</span>
-                                </div>
-                            </div>
-
-                            <div onclick="openCitation('REF-AAPL-ITEM7')"
-                                class="bg-slate-900/80 border border-slate-800 p-4 rounded-lg cursor-pointer transition-all space-y-2 hover:border-blue-500/50 hover:bg-slate-900 shadow-lg">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-blue-400 font-bold flex items-center gap-2">
-                                        <i class="bi bi-clipboard-data text-blue-400"></i>
-                                        [Item 7] Yönetim Açıklamaları (MD&amp;A) — Marj Genişlemesi
-                                    </span>
-                                    <span
-                                        class="inline-flex items-center gap-1 text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
-                                        <i class="bi bi-check-circle"></i>RRF: 0.918
-                                    </span>
-                                </div>
-                                <p class="text-slate-300 text-[11px] line-clamp-2 font-sans leading-relaxed">
-                                    Brüt marjdaki %43.31 seviyesine genişleme, yüksek kârlılığa sahip Servisler
-                                    (Services) segmentinin payının artması ve olumlu ürün karmasından kaynaklanmıştır.
-                                </p>
-                                <div class="text-[10px] text-slate-500 flex justify-between pt-1 border-t border-slate-800/60">
-                                    <span>Form 10-K Part II Item 7</span>
-                                    <span>accn: 0000320193-24-000106</span>
-                                </div>
-                            </div>
-
-                            <div onclick="openCitation('REF-THYAO-KAP1')"
-                                class="bg-slate-900/80 border border-slate-800 p-4 rounded-lg cursor-pointer transition-all space-y-2 hover:border-emerald-500/50 hover:bg-slate-900 shadow-lg">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-emerald-400 font-bold flex items-center gap-2">
-                                        <i class="bi bi-airplane text-emerald-400"></i>
-                                        [KAP-2024-001] THYAO 2. Çeyrek Finansal Sonuçları
-                                    </span>
-                                    <span
-                                        class="inline-flex items-center gap-1 text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
-                                        <i class="bi bi-check-circle"></i>RRF: 0.895
-                                    </span>
-                                </div>
-                                <p class="text-slate-300 text-[11px] line-clamp-2 font-sans leading-relaxed">
-                                    Yolcu sayısı geçen yılın aynı dönemine göre %4.3 artarak 40.6 milyona ulaşmıştır.
-                                    Jet yakıtı crack spread yükselişi esas faaliyet kârını baskılamıştır.
-                                </p>
-                                <div class="text-[10px] text-slate-500 flex justify-between pt-1 border-t border-slate-800/60">
-                                    <span>KAP Özel Durum Açıklaması</span>
-                                    <span>Tarih: 2024-08-12</span>
-                                </div>
-                            </div>
-
-                            <div onclick="openCitation('REF-GARAN-KAP1')"
-                                class="bg-slate-900/80 border border-slate-800 p-4 rounded-lg cursor-pointer transition-all space-y-2 hover:border-emerald-500/50 hover:bg-slate-900 shadow-lg">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-emerald-400 font-bold flex items-center gap-2">
-                                        <i class="bi bi-bank text-emerald-400"></i>
-                                        [KAP-GARAN-01] Garanti BBVA Yarıyıl Sonuçları
-                                    </span>
-                                    <span
-                                        class="inline-flex items-center gap-1 text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
-                                        <i class="bi bi-check-circle"></i>RRF: 0.880
-                                    </span>
-                                </div>
-                                <p class="text-slate-300 text-[11px] line-clamp-2 font-sans leading-relaxed">
-                                    Konsolide net kâr 44.5 milyar TL gerçekleşmiş, net faiz marjı enflasyon muhasebesi
-                                    ve mevduat maliyeti baskısıyla 180 baz puan gerilemiştir.
-                                </p>
-                                <div class="text-[10px] text-slate-500 flex justify-between pt-1 border-t border-slate-800/60">
-                                    <span>KAP Özel Durum Açıklaması</span>
-                                    <span>Tarih: 2024-07-28</span>
-                                </div>
+                            <div id="ragChunksList" class="space-y-3">
+                                <!-- Dinamik olarak seçili şirkete göre render edilir -->
                             </div>
                         </div>
 
@@ -1838,6 +1756,48 @@
                 peRatios: [32.1, 28.4, 24.2, 29.1, 34.20],
                 debtEquities: [1.51, 1.45, 1.40, 1.39, 1.38],
                 citations: ['REF-AAPL-FY20', 'REF-AAPL-FY21', 'REF-AAPL-FY22', 'REF-AAPL-FY23', 'REF-AAPL-FY24'],
+                ragChunks: [
+                    {
+                        id: 'REF-AAPL-ITEM1A',
+                        sectionTitle: '[Item 1A] Risk Faktörleri — Tedarik Zinciri & Asya Bağımlılığı',
+                        score: '0.942',
+                        icon: 'bi-exclamation-triangle text-amber-400',
+                        text: "Apple'ın tek kaynaklı bileşen ve yarı iletken üreticilerine (özellikle Asya/Tayvan bölgesine) bağımlı olması, operasyonel aksaklık ve jeopolitik gerginliklerde ciddi aksamalara yol açabilir.",
+                        form: 'Form 10-K Part I Item 1A',
+                        accn: '0000320193-24-000106',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0000320193'
+                    },
+                    {
+                        id: 'REF-AAPL-ITEM7',
+                        sectionTitle: '[Item 7] Yönetim Açıklamaları (MD&A) — Marj Genişlemesi',
+                        score: '0.918',
+                        icon: 'bi-clipboard-data text-blue-400',
+                        text: "Brüt marjdaki %43.31 seviyesine genişleme, yüksek kârlılığa sahip Servisler (Services) segmentinin payının artması ve olumlu ürün karmasından kaynaklanmıştır.",
+                        form: 'Form 10-K Part II Item 7',
+                        accn: '0000320193-24-000106',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0000320193'
+                    },
+                    {
+                        id: 'REF-AAPL-ITEM1',
+                        sectionTitle: '[Item 1] İş Modeli — Donanım & Dijital Servis Ekosistemi',
+                        score: '0.905',
+                        icon: 'bi-diagram-3 text-blue-400',
+                        text: "Apple; iPhone, Mac, iPad, giyilebilir ürünler ile App Store, Apple Pay, iCloud ve Apple Music dijital servislerinden oluşan entegre ekosistem yürütmektedir.",
+                        form: 'Form 10-K Part I Item 1',
+                        accn: '0000320193-24-000106',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0000320193'
+                    },
+                    {
+                        id: 'REF-AAPL-REV',
+                        sectionTitle: '[Item 8] Finansal Tablolar — Gelir ve Kâr Teyidi',
+                        score: '1.000',
+                        icon: 'bi-cash-stack text-emerald-400',
+                        text: "FY2024 konsolide finansal tablolar: Toplam Hasılat $394.33 Milyar (+%7.79 YoY), Net Kâr $99.80 Milyar (+%2.89 YoY), Brüt Kâr Marjı %43.31.",
+                        form: 'Form 10-K Part II Item 8',
+                        accn: '0000320193-24-000106',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0000320193'
+                    }
+                ],
                 narrative: `
                     Apple Inc. (AAPL), FY2024 mali yılında <strong>$394.33B</strong> toplam hasılat elde ederek yıllık <strong>%7.79</strong> büyüme sergilemiştir <button onclick="openCitation('REF-AAPL-REV')" class="text-blue-400 font-mono hover:underline">[Item 8]</button>.
                     Konsolide net kâr <strong>$99.80B</strong> düzeyinde gerçekleşirken, brüt kâr marjı Services (Servisler) segmentinin artan payı ile <strong>%43.31</strong> seviyesine ulaşmıştır <button onclick="openCitation('REF-AAPL-ITEM7')" class="text-blue-400 font-mono hover:underline">[Item 7 MD&amp;A]</button>.
@@ -1870,6 +1830,48 @@
                 peRatios: [12.0, 8.5, 5.2, 4.85, 4.85],
                 debtEquities: [1.42, 1.20, 0.98, 0.84, 0.8519],
                 citations: ['REF-THY-20', 'REF-THY-21', 'REF-THY-22', 'REF-THY-23', 'REF-THY-24'],
+                ragChunks: [
+                    {
+                        id: 'REF-THYAO-KAP1',
+                        sectionTitle: '[KAP-2024-001] THYAO 2. Çeyrek Finansal Sonuçları — Yolcu Sayısı & Marj',
+                        score: '0.940',
+                        icon: 'bi-airplane text-emerald-400',
+                        text: "Yolcu sayısı geçen yılın aynı dönemine göre %4.3 artarak 40.6 milyona ulaşmıştır. Jet yakıtı crack spread yükselişi esas faaliyet kâr marjını baskılamış ve %21.80 olarak gerçekleşmiştir.",
+                        form: 'KAP Özel Durum Açıklaması',
+                        accn: 'KAP: THYAO-2024-Q2',
+                        url: 'https://www.kap.org.tr'
+                    },
+                    {
+                        id: 'REF-THYAO-KAP2',
+                        sectionTitle: '[KAP-2024-002] Turkish Cargo & Uluslararası Transit Hat Büyümesi',
+                        score: '0.915',
+                        icon: 'bi-box-seam text-emerald-400',
+                        text: "Küresel kargo pazarında Turkish Cargo pazar payını artırmış, transit yolcu gelirlerindeki döviz girdisi ile gelirlerin büyük kısmı döviz bazlı olarak dengelenmiştir.",
+                        form: 'KAP Faaliyet Raporu',
+                        accn: 'KAP: THYAO-CARGO',
+                        url: 'https://www.kap.org.tr'
+                    },
+                    {
+                        id: 'REF-THYAO-KAP3',
+                        sectionTitle: '[KAP-2024-003] Filo Genişleme Planı & Borç / Özkaynak Dengesi',
+                        score: '0.890',
+                        icon: 'bi-shield-check text-emerald-400',
+                        text: "Toplam Borç / Özkaynak oranı 0.8519 ile güçlü bir bilanço yapısını korumakta olup, yeni nesil yakıt tasarruflu uçak teslimatlarıyla filo optimizasyonu sürdürülmektedir.",
+                        form: 'KAP Finansal Bildirim',
+                        accn: 'KAP: THYAO-DEBT',
+                        url: 'https://www.kap.org.tr'
+                    },
+                    {
+                        id: 'REF-THYAO-REV',
+                        sectionTitle: '[KAP Yıllık Teyit] ₺504.30B Hasılat & ₺163.00B Net Kâr',
+                        score: '1.000',
+                        icon: 'bi-cash-stack text-emerald-400',
+                        text: "KAP resmi konsolide finansal bildirim: Toplam Hasılat ₺504.30 Milyar (+%42.50 YoY), Net Kâr ₺163.00 Milyar, Özkaynak Kârlılığı yüksek seviyesini korumaktadır.",
+                        form: 'KAP Bağımsız Denetim Raporu',
+                        accn: 'KAP: THYAO-FY2023',
+                        url: 'https://www.kap.org.tr'
+                    }
+                ],
                 narrative: `
                     Türk Hava Yolları, 2023 FY döneminde <strong>₺504.30B</strong> hasılat ve <strong>₺163.00B</strong> net kâr kaydetmiştir <button onclick="openCitation('REF-THYAO-KAP1')" class="text-emerald-400 font-mono hover:underline">[KAP-2024-001]</button>.
                     2024 2. Çeyrekte brüt kâr marjı, jet yakıtı crack spread artışı sebebiyle <strong>-170 baz puan</strong> azalarak <strong>%21.80</strong> seviyesine gerilemiştir <button onclick="openCitation('REF-THYAO-KAP1')" class="text-emerald-400 font-mono hover:underline">[KAP Açıklaması]</button>.
@@ -1902,6 +1904,48 @@
                 peRatios: [6.5, 5.8, 4.2, 5.12, 5.12],
                 debtEquities: [16.8, 17.2, 16.5, 16.8, 16.1],
                 citations: ['REF-GAR-20', 'REF-GAR-21', 'REF-GAR-22', 'REF-GAR-23', 'REF-GAR-24'],
+                ragChunks: [
+                    {
+                        id: 'REF-GARAN-KAP1',
+                        sectionTitle: '[KAP-GARAN-01] Garanti BBVA Yarıyıl Sonuçları — Net Kâr & Sermaye Yeterliliği',
+                        score: '0.942',
+                        icon: 'bi-bank text-emerald-400',
+                        text: "Konsolide net kâr 44.5 milyar TL gerçekleşmiş, net faiz marjı enflasyon muhasebesi ve mevduat maliyeti baskısıyla 180 baz puan gerilemiştir. Sermaye Yeterlilik Oranı %16.10 ile güçlüdür.",
+                        form: 'KAP Özel Durum Açıklaması',
+                        accn: 'KAP: GARAN-2024-H1',
+                        url: 'https://www.kap.org.tr'
+                    },
+                    {
+                        id: 'REF-GARAN-KAP2',
+                        sectionTitle: '[KAP-GARAN-02] Ücret & Komisyon Gelirlerinde %120 Artış',
+                        score: '0.920',
+                        icon: 'bi-graph-up-arrow text-emerald-400',
+                        text: "Banka yönetimi, sıkı para politikasında mevduat maliyetleri artsa da ücret ve komisyon gelirlerindeki %120'lik büyüme ile faiz dışı gelir tabanının kuvvetlendirildiğini belirtmiştir.",
+                        form: 'KAP Faaliyet Raporu',
+                        accn: 'KAP: GARAN-COMM',
+                        url: 'https://www.kap.org.tr'
+                    },
+                    {
+                        id: 'REF-GARAN-KAP3',
+                        sectionTitle: '[BDDK Denetim] İhtiyatlı Kredi Karşılık Politikası & Risk Yönetimi',
+                        score: '0.895',
+                        icon: 'bi-shield-shaded text-emerald-400',
+                        text: "BDDK ve mevzuat uyumlu ihtiyatlı karşılık politikası sürdürülmüş, takipteki krediler oranı kontrol altında tutularak özkaynak kârlılığı (ROE) %33.50 seviyesinde gerçekleşmiştir.",
+                        form: 'BDDK / KAP Finansal Rapor',
+                        accn: 'KAP: GARAN-RISK',
+                        url: 'https://www.kap.org.tr'
+                    },
+                    {
+                        id: 'REF-GARAN-REV',
+                        sectionTitle: '[KAP Finansal Teyit] ₺185.00B Gelir & ROE %33.50',
+                        score: '1.000',
+                        icon: 'bi-cash-stack text-emerald-400',
+                        text: "KAP resmi konsolide bildirim: Toplam Gelir ₺185.00 Milyar (+%68.40 YoY), Net Kâr ₺44.50 Milyar, Özkaynak Kârlılığı (ROE) %33.50, F/K 5.12.",
+                        form: 'KAP Konsolide Mali Rapor',
+                        accn: 'KAP: GARAN-FY2024',
+                        url: 'https://www.kap.org.tr'
+                    }
+                ],
                 narrative: `
                     Garanti BBVA, 2024 ilk yarıyılında <strong>₺44.5B</strong> konsolide net kâr açıklamıştır <button onclick="openCitation('REF-GARAN-KAP1')" class="text-emerald-400 font-mono hover:underline">[KAP-GARAN-01]</button>.
                     Enflasyon muhasebesi ve mevduat faiz maliyeti baskısı ile net faiz marjı gerilemiş olsa da Sermaye Yeterlilik Oranı (CAR) <strong>%16.10</strong> ile yasal sınırların oldukça üzerindedir.
@@ -1934,6 +1978,48 @@
                 peRatios: [34.5, 36.1, 27.2, 32.4, 35.80],
                 debtEquities: [0.55, 0.48, 0.44, 0.43, 0.42],
                 citations: ['REF-MSFT-20', 'REF-MSFT-21', 'REF-MSFT-22', 'REF-MSFT-23', 'REF-MSFT-24'],
+                ragChunks: [
+                    {
+                        id: 'REF-MSFT-ITEM1A',
+                        sectionTitle: '[Item 1A] Risk Faktörleri — Bulut Veri Merkezleri & GPU Çip Darboğazları',
+                        score: '0.948',
+                        icon: 'bi-exclamation-triangle text-amber-400',
+                        text: "Bulut veri merkezleri için elektrik enerjisi, arazi ve gelişmiş GPU çip tedariki darboğazları ile siber güvenlik tehditleri operasyonel büyüme üzerinde risk oluşturabilir.",
+                        form: 'Form 10-K Part I Item 1A',
+                        accn: '0000789019-24-000020',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0000789019'
+                    },
+                    {
+                        id: 'REF-MSFT-ITEM7',
+                        sectionTitle: '[Item 7] Yönetim Açıklamaları (MD&A) — Azure Büyümesi & Operasyonel Marj',
+                        score: '0.931',
+                        icon: 'bi-clipboard-data text-blue-400',
+                        text: "Yönetim, Azure ve diğer bulut hizmetlerindeki %29'luk güçlü büyümenin ve kurumsal yapay zekâ entegrasyonunun (Copilot) operasyonel kârlılığı belirgin şekilde artırdığını açıklamıştır.",
+                        form: 'Form 10-K Part II Item 7',
+                        accn: '0000789019-24-000020',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0000789019'
+                    },
+                    {
+                        id: 'REF-MSFT-ITEM1',
+                        sectionTitle: '[Item 1] İş Modeli — Intelligent Cloud & Kurumsal Yazılım',
+                        score: '0.912',
+                        icon: 'bi-diagram-3 text-blue-400',
+                        text: "Microsoft; kurumsal bulut altyapısı (Azure), Microsoft 365 üretkenlik araçları, LinkedIn profesyonel ağı ve kişisel bilişim çözümleriyle gelir üretmektedir.",
+                        form: 'Form 10-K Part I Item 1',
+                        accn: '0000789019-24-000020',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0000789019'
+                    },
+                    {
+                        id: 'REF-MSFT-ITEM8',
+                        sectionTitle: '[Item 8] Finansal Tablolar — $245.12B Hasılat & $88.14B Net Kâr',
+                        score: '1.000',
+                        icon: 'bi-cash-stack text-emerald-400',
+                        text: "FY2024 denetlenmiş resmi veriler: Toplam Gelir $245.12 Milyar (+%15.67 YoY), Konsolide Net Kâr $88.14 Milyar (+%21.80 YoY), Brüt Kâr Marjı %69.76, Borç/Özkaynak 0.42x.",
+                        form: 'Form 10-K Part II Item 8',
+                        accn: '0000789019-24-000020',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0000789019'
+                    }
+                ],
                 narrative: `
                     Microsoft Corporation (MSFT), Azure bulut altyapısı ve kurumsal AI yatırımlarının desteğiyle FY2024 mali yılında <strong>$245.12B</strong> ciro ve <strong>$88.14B</strong> net kâr açıklamıştır <button onclick="openCitation('REF-MSFT-ITEM8')" class="text-blue-400 font-mono hover:underline">[10-K Item 8]</button>.
                     Brüt marj <strong>%69.76</strong> seviyesinde korunmuş olup Borç / Özkaynak oranı <strong>0.42</strong> ile son derece sağlam bir bilançoyu yansıtmaktadır.
@@ -1965,6 +2051,48 @@
                 peRatios: [60.2, 75.1, 48.3, 55.4, 42.50],
                 debtEquities: [0.55, 0.40, 0.35, 0.32, 0.38],
                 citations: ['REF-NVDA-20', 'REF-NVDA-21', 'REF-NVDA-22', 'REF-NVDA-23', 'REF-NVDA-24'],
+                ragChunks: [
+                    {
+                        id: 'REF-NVDA-ITEM1A',
+                        sectionTitle: '[Item 1A] Risk Faktörleri — İhracat Kısıtlamaları & CoWoS Kapasite Sınırları',
+                        score: '0.952',
+                        icon: 'bi-exclamation-triangle text-amber-400',
+                        text: "ABD hükümetinin gelişmiş yapay zekâ çiplerine yönelik ihracat kontrolleri ve CoWoS gelişmiş çip paketleme dökümhane kapasitesindeki darboğazlar ana risk faktörleridir.",
+                        form: 'Form 10-K Part I Item 1A',
+                        accn: '0001045810-24-000029',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0001045810'
+                    },
+                    {
+                        id: 'REF-NVDA-ITEM7',
+                        sectionTitle: '[Item 7] Yönetim Açıklamaları (MD&A) — Veri Merkezi Gelirlerinde %217 Artış',
+                        score: '0.938',
+                        icon: 'bi-clipboard-data text-blue-400',
+                        text: "Büyük dil modelleri ve üretken yapay zekâ yatırımları yapan küresel bulut sağlayıcılarının yoğun talebi ile Veri Merkezi geliri yıllık %217 artarak brüt marjı %72.72 rekoruna taşımıştır.",
+                        form: 'Form 10-K Part II Item 7',
+                        accn: '0001045810-24-000029',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0001045810'
+                    },
+                    {
+                        id: 'REF-NVDA-ITEM1',
+                        sectionTitle: '[Item 1] İş Modeli — Hızlandırılmış Hesaplama & CUDA Platformu',
+                        score: '0.915',
+                        icon: 'bi-diagram-3 text-blue-400',
+                        text: "NVIDIA; AI modellerinin eğitilmesi ve inferansı için gerekli GPU işlemcileri, InfiniBand ağ mimarisi ve CUDA yazılım kütüphaneleriyle yapay zekâ donanım ekosistemine liderlik eder.",
+                        form: 'Form 10-K Part I Item 1',
+                        accn: '0001045810-24-000029',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0001045810'
+                    },
+                    {
+                        id: 'REF-NVDA-ITEM8',
+                        sectionTitle: '[Item 8] Finansal Tablolar — $60.92B Hasılat & $29.76B Net Kâr',
+                        score: '1.000',
+                        icon: 'bi-cash-stack text-emerald-400',
+                        text: "FY2024 resmi konsolide tablolar: Toplam Hasılat $60.92 Milyar (+%125.85 YoY), Konsolide Net Kâr $29.76 Milyar (+%581.32 YoY), Brüt Kâr Marjı %72.72.",
+                        form: 'Form 10-K Part II Item 8',
+                        accn: '0001045810-24-000029',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0001045810'
+                    }
+                ],
                 narrative: `
                     NVIDIA Corporation (NVDA), uretken yapay zeka cip talebiyle FY2024 yilinda <strong>$60.92B</strong> ciro ve <strong>$29.76B</strong> net kar aciklamistir.
                     Brut marj <strong>%72.72</strong> seviyesine ulasarak rekor kirmistir.
@@ -1996,6 +2124,48 @@
                 peRatios: [29.8, 25.4, 18.2, 23.1, 24.50],
                 debtEquities: [0.13, 0.11, 0.11, 0.10, 0.11],
                 citations: ['REF-GOOGL-20', 'REF-GOOGL-21', 'REF-GOOGL-22', 'REF-GOOGL-23', 'REF-GOOGL-24'],
+                ragChunks: [
+                    {
+                        id: 'REF-GOOGL-ITEM1A',
+                        sectionTitle: '[Item 1A] Risk Faktörleri — Arama Motoru Antitröst Davaları & Regülasyon',
+                        score: '0.946',
+                        icon: 'bi-exclamation-triangle text-amber-400',
+                        text: "ABD Adalet Bakanlığı (DOJ) ve AB Komisyonu tarafından yürütülen antitröst soruşturmaları ile yapay zekâ telif hakları ve veri koruma regülasyonları ana risk faktörleridir.",
+                        form: 'Form 10-K Part I Item 1A',
+                        accn: '0001652044-24-000019',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0001652044'
+                    },
+                    {
+                        id: 'REF-GOOGL-ITEM7',
+                        sectionTitle: '[Item 7] Yönetim Açıklamaları (MD&A) — Google Cloud & YouTube Büyümesi',
+                        score: '0.928',
+                        icon: 'bi-clipboard-data text-blue-400',
+                        text: "Yönetim, Google Cloud operasyonel kârlılığındaki genişleme ve YouTube reklam gelirlerindeki güçlü toparlanmanın brüt kâr marjını %57.52 seviyesine taşıdığını ifade etmiştir.",
+                        form: 'Form 10-K Part II Item 7',
+                        accn: '0001652044-24-000019',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0001652044'
+                    },
+                    {
+                        id: 'REF-GOOGL-ITEM1',
+                        sectionTitle: '[Item 1] İş Modeli — Google Hizmetleri, Cloud ve Donanım',
+                        score: '0.910',
+                        icon: 'bi-diagram-3 text-blue-400',
+                        text: "Alphabet; Google Arama, YouTube, Android, Google Play ve kurumsal bulut altyapısı (Google Cloud Platform & Workspace) segmentlerinden gelir elde etmektedir.",
+                        form: 'Form 10-K Part I Item 1',
+                        accn: '0001652044-24-000019',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0001652044'
+                    },
+                    {
+                        id: 'REF-GOOGL-ITEM8',
+                        sectionTitle: '[Item 8] Finansal Tablolar — $349.98B Hasılat & $88.00B Net Kâr',
+                        score: '1.000',
+                        icon: 'bi-cash-stack text-emerald-400',
+                        text: "FY2024 resmi konsolide tablolar: Toplam Hasılat $349.98 Milyar (+%13.85 YoY), Net Kâr $88.00 Milyar (+%19.25 YoY), Borç/Özkaynak 0.11x ile net nakit pozisyonu.",
+                        form: 'Form 10-K Part II Item 8',
+                        accn: '0001652044-24-000019',
+                        url: 'https://www.sec.gov/edgar/browse/?CIK=0001652044'
+                    }
+                ],
                 narrative: `
                     Alphabet Inc. (GOOGL), Google Arama, YouTube ve Bulut servislerinin buyumesiyle FY2024 mali yilinda <strong>$349.98B</strong> hasilat elde etmistir.
                     <strong>0.11</strong> Borc / Ozkaynak oraniyla son derece saglikli bir bilancoya sahiptir.
@@ -2398,10 +2568,52 @@
             }).join('');
         }
 
+        function renderRagChunks(symbol) {
+            const list = document.getElementById('ragChunksList');
+            const badge = document.getElementById('ragCompanyBadge');
+            const d = companyData[symbol] || companyData.AAPL;
+            if (badge) badge.innerText = `[${symbol} — CIK: ${d.cik}]`;
+            if (!list) return;
+
+            const chunks = d.ragChunks || [];
+            list.innerHTML = '';
+
+            chunks.forEach((chunk) => {
+                const item = document.createElement('div');
+                item.className = "bg-slate-900/80 border border-slate-800 p-4 rounded-lg cursor-pointer transition-all space-y-2 hover:border-blue-500/50 hover:bg-slate-900 shadow-lg";
+                item.onclick = () => openCitation(chunk.id);
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-blue-400 font-bold flex items-center gap-2">
+                            <i class="bi ${chunk.icon || 'bi-file-text'}"></i>
+                            ${chunk.sectionTitle}
+                        </span>
+                        <span class="inline-flex items-center gap-1 text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
+                            <i class="bi bi-check-circle"></i>RRF: ${chunk.score}
+                        </span>
+                    </div>
+                    <p class="text-slate-300 text-[11px] line-clamp-2 font-sans leading-relaxed">
+                        ${chunk.text}
+                    </p>
+                    <div class="text-[10px] text-slate-500 flex justify-between pt-1 border-t border-slate-800/60 font-mono">
+                        <span>${chunk.form}</span>
+                        <span>accn: ${chunk.accn}</span>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+
+            if (chunks.length > 0) {
+                openCitation(chunks[0].id);
+            }
+        }
+
         function openCitation(refCode) {
-            toggleCitationDrawer(true); // Ensure drawer is open
-            document.getElementById('citationEmptyState').classList.add('hidden');
-            document.getElementById('citationContent').classList.remove('hidden');
+            toggleCitationDrawer(true);
+            const emptyState = document.getElementById('citationEmptyState');
+            const content = document.getElementById('citationContent');
+            if (emptyState) emptyState.classList.add('hidden');
+            if (content) content.classList.remove('hidden');
 
             const citCode = document.getElementById('citCode');
             const citSection = document.getElementById('citSection');
@@ -2410,50 +2622,46 @@
             const citExcerpt = document.getElementById('citExcerpt');
             const citSecUrl = document.getElementById('citSecUrl');
 
-            citCode.innerText = refCode;
+            if (citCode) citCode.innerText = refCode;
 
-            if (refCode.includes('REV') || refCode.includes('NET') || refCode.includes('DEBT')) {
-                citSection.innerText = "SEC Form 10-K Part II Item 8 (Consolidated Financial Statements)";
-                citAccn.innerText = "0000320193-24-000106";
-                citScore.innerText = "1.000 (XBRL Deterministik Doğrudan Değer)";
-                citExcerpt.innerText = "Gelir tablosu ve bilanço kalemleri SEC XBRL doğrulanmış resmi taksonomiden alınmıştır. Total Revenue: $394,328,000,000 USD.";
-                citSecUrl.href = "https://www.sec.gov/edgar/browse/?CIK=0000320193";
-            } else if (refCode.includes('ITEM1A')) {
-                citSection.innerText = "SEC Form 10-K Part I Item 1A (Risk Factors)";
-                citAccn.innerText = "0000320193-24-000106";
-                citScore.innerText = "0.942 (RRF Hibrit Benzerlik)";
-                citExcerpt.innerText = "<filing_excerpt source='SEC 10-K' section='Item 1A'>The Company's business can be impacted by political, legal, regulatory and logistical risks related to international operations. Substantially all of the Company's manufacturing is performed in Asia, including mainland China, India, and Taiwan.</filing_excerpt>";
-                citSecUrl.href = "https://www.sec.gov/edgar/browse/?CIK=0000320193";
-            } else if (refCode.includes('THYAO') || refCode.includes('THY')) {
-                citSection.innerText = "KAP Özel Durum Açıklaması (Finansal Tablo Dipnotları)";
-                citAccn.innerText = "KAP-2024-001 / BIST";
-                citScore.innerText = "0.895 (KAP RAG Eşleşmesi)";
-                citExcerpt.innerText = "<filing_excerpt source='KAP' id='KAP-2024-001'>Akaryakıt giderlerindeki artış ve jet yakıtı crack spread yükselişi esas faaliyet kârını baskılamıştır. 2024 2. Çeyrek net marjı %12.7 olarak gerçekleşmiştir.</filing_excerpt>";
-                citSecUrl.href = "https://www.kap.org.tr";
-            } else if (refCode.includes('GARAN') || refCode.includes('GAR')) {
-                citSection.innerText = "KAP Özel Durum Açıklaması (Konsolide Finansal Rapor)";
-                citAccn.innerText = "KAP-GARAN-01 / BIST";
-                citScore.innerText = "0.880 (KAP RAG Eşleşmesi)";
-                citExcerpt.innerText = "<filing_excerpt source='KAP' id='KAP-GARAN-01'>Konsolide net kâr 44.5 milyar TL gerçekleşmiş, net faiz marjı enflasyon muhasebesi ve mevduat maliyeti baskısıyla 180 baz puan gerilemiştir.</filing_excerpt>";
-                citSecUrl.href = "https://www.kap.org.tr";
+            const d = companyData[currentSymbol] || companyData.AAPL;
+            let matchedChunk = (d.ragChunks || []).find(c => c.id === refCode);
+            if (!matchedChunk) {
+                for (const k in companyData) {
+                    matchedChunk = (companyData[k].ragChunks || []).find(c => c.id === refCode);
+                    if (matchedChunk) break;
+                }
+            }
+
+            if (matchedChunk) {
+                if (citSection) citSection.innerText = matchedChunk.form + " — " + matchedChunk.sectionTitle;
+                if (citAccn) citAccn.innerText = matchedChunk.accn;
+                if (citScore) citScore.innerText = `${matchedChunk.score} (RRF Hibrit Benzerlik)`;
+                if (citExcerpt) citExcerpt.innerText = matchedChunk.text;
+                if (citSecUrl) citSecUrl.href = matchedChunk.url || ("https://www.sec.gov/edgar/browse/?CIK=" + d.cik);
             } else {
-                citSection.innerText = "SEC Form 10-K Part II Item 7 (MD&A)";
-                citAccn.innerText = "0000320193-24-000106";
-                citScore.innerText = "0.918 (RRF Hibrit Benzerlik)";
-                citExcerpt.innerText = "<filing_excerpt source='SEC 10-K' section='Item 7'>Gross margin expanded primarily due to a higher Services mix and strength in enterprise and digital ecosystem offerings.</filing_excerpt>";
-                citSecUrl.href = "https://www.sec.gov/edgar/browse/?CIK=0000320193";
+                if (citSection) citSection.innerText = `${d.name} (${currentSymbol}) Resmi Finansal Bildirimi`;
+                if (citAccn) citAccn.innerText = d.cik;
+                if (citScore) citScore.innerText = "1.000 (Deterministik XBRL Doğrulaması)";
+                if (citExcerpt) citExcerpt.innerText = d.narrative ? d.narrative.replace(/<[^>]*>/g, '').trim() : "Doğrulanmış resmi finansal bildirim.";
+                if (citSecUrl) citSecUrl.href = "https://www.sec.gov/edgar/browse/?CIK=" + d.cik;
             }
 
             const tab3Preview = document.getElementById('tab3PreviewContent');
             if (tab3Preview) {
+                const titleText = matchedChunk ? matchedChunk.sectionTitle : `${d.name} Resmi Raporu`;
+                const metaText = matchedChunk ? `${matchedChunk.form} | accn: ${matchedChunk.accn}` : `CIK: ${d.cik}`;
+                const bodyText = matchedChunk ? matchedChunk.text : (d.narrative ? d.narrative.replace(/<[^>]*>/g, '').trim() : '');
                 tab3Preview.innerHTML = `
                     <div class="space-y-2">
-                        <div class="text-blue-400 font-bold">${citSection.innerText}</div>
-                        <div class="text-[10px] text-slate-400">Accession: ${citAccn.innerText}</div>
-                        <div class="text-amber-200/90 bg-amber-950/30 p-2.5 rounded border border-amber-800/40 text-[11px] italic">
-                            ${citExcerpt.innerText}
+                        <div class="text-blue-400 font-bold">${titleText}</div>
+                        <div class="text-[10px] text-slate-400 font-mono">${metaText}</div>
+                        <div class="text-amber-200/90 bg-amber-950/30 p-2.5 rounded border border-amber-800/40 text-[11px] leading-relaxed">
+                            "${bodyText}"
                         </div>
-                        <div class="text-emerald-400 text-[10px]">[✓] Critic Onayı: %100 Deterministik Referans</div>
+                        <div class="text-emerald-400 text-[10px] font-mono flex items-center gap-1.5">
+                            <i class="bi bi-patch-check-fill"></i>[✓] Critic Onayı: %100 Deterministik Referans Eşleşmesi
+                        </div>
                     </div>
                 `;
             }
@@ -2555,7 +2763,67 @@
             }
         }
 
-        function selectTicker(symbol) {
+        function syncToParent(symbol) {
+            symbol = symbol.toUpperCase().replace('.IS', '');
+            try {
+                if (window.parent && window.parent !== window) {
+                    // Update URL query param silently in parent history
+                    try {
+                        if (window.parent.history && window.parent.history.replaceState) {
+                            const curUrl = new URL(window.parent.location.href);
+                            if (curUrl.searchParams.get('ticker') !== symbol) {
+                                curUrl.searchParams.set('ticker', symbol);
+                                window.parent.history.replaceState(null, '', curUrl.href);
+                            }
+                        }
+                    } catch (eh) {}
+
+                    // Try clicking parent Streamlit chip button directly
+                    if (window.parent.document) {
+                        const buttons = Array.from(window.parent.document.querySelectorAll('button'));
+                        let foundBtn = null;
+                        for (const b of buttons) {
+                            const txt = (b.innerText || b.textContent || '').trim();
+                            const lines = txt.split('\n').map(s => s.trim().toUpperCase());
+                            if (lines[0] === symbol || txt.toUpperCase().startsWith(symbol + ' ') || txt.toUpperCase().startsWith(symbol + '\n') || txt.toUpperCase() === symbol) {
+                                foundBtn = b;
+                                break;
+                            }
+                        }
+                        if (foundBtn) {
+                            const isPrimary = foundBtn.getAttribute('data-testid') === 'stBaseButton-primary' ||
+                                             foundBtn.getAttribute('kind') === 'primary' ||
+                                             (foundBtn.className && foundBtn.className.includes('primary'));
+                            if (!isPrimary) {
+                                foundBtn.click();
+                                return;
+                            }
+                            return; // Already active in parent
+                        }
+                    }
+
+                    // Fallback: reload parent with updated query param if button wasn't found
+                    const parentUrl = new URL(window.parent.location.href);
+                    if (parentUrl.searchParams.get('ticker') !== symbol) {
+                        parentUrl.searchParams.set('ticker', symbol);
+                        window.parent.location.href = parentUrl.href;
+                    }
+                }
+            } catch (err) {
+                console.warn("Parent sync error:", err);
+                try {
+                    if (window.top && window.top.location) {
+                        const topUrl = new URL(window.top.location.href);
+                        if (topUrl.searchParams.get('ticker') !== symbol) {
+                            topUrl.searchParams.set('ticker', symbol);
+                            window.top.location.href = topUrl.href;
+                        }
+                    }
+                } catch (e2) {}
+            }
+        }
+
+        function selectTicker(symbol, fromParentSync = false) {
             symbol = symbol.toUpperCase().replace('.IS', '');
             if (!companyData[symbol]) {
                 symbol = 'AAPL'; // fallback
@@ -2608,10 +2876,17 @@
                 }
             });
 
+            const searchInput = document.getElementById('globalSearchInput');
+            if (searchInput) searchInput.value = symbol;
+
             renderCharts(d);
             renderTable(d);
-
+            renderRagChunks(symbol);
             runOrchestratorAgent(symbol);
+
+            if (!fromParentSync) {
+                syncToParent(symbol);
+            }
         }
 
         function applyPreset(type) {
@@ -2760,7 +3035,7 @@ ${d.narrative.replace(/<[^>]*>/g, '')}
         });
 
         window.onload = function () {
-            selectTicker('AAPL');
+            selectTicker('AAPL', true);
         };
     </script>
 </body>

@@ -71,11 +71,23 @@ class EdgarMCPClient:
     def call_tool(self, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
         try:
             loop = asyncio.get_running_loop()
-            import nest_asyncio
-            nest_asyncio.apply()
-            return loop.run_until_complete(self.call_tool_async(tool_name, arguments))
-        except (RuntimeError, ImportError):
-            return asyncio.run(self.call_tool_async(tool_name, arguments))
+        except RuntimeError:
+            loop = None
+
+        if loop is not None and loop.is_running():
+            try:
+                import nest_asyncio
+                nest_asyncio.apply()
+                return loop.run_until_complete(self.call_tool_async(tool_name, arguments))
+            except Exception:
+                # uvloop veya nest_asyncio'nun desteklemediği döngüler için
+                # Ayrı bir thread üzerinde bağımsız asyncio.run ile çalıştır
+                import concurrent.futures
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(asyncio.run, self.call_tool_async(tool_name, arguments))
+                    return future.result()
+
+        return asyncio.run(self.call_tool_async(tool_name, arguments))
 
     def get_react_tool_definitions(self) -> List[Any]:
         from src.agents.base_agent import ToolDefinition

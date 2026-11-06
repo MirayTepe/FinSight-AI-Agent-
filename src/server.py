@@ -109,7 +109,7 @@ async def api_orchestrate(
         }
 
     planner = OrchestratorPlanner(max_steps=max_steps or 8)
-    state = planner.run_query(full_query)
+    state = await asyncio.to_thread(planner.run_query, full_query)
 
     from src.tools.hybrid_llm import get_hybrid_llm_client
     hybrid_client = get_hybrid_llm_client()

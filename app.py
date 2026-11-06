@@ -81,8 +81,14 @@ st.set_page_config(
 if "theme" not in st.session_state:
     st.session_state.theme = "dark"
 
-if "selected_ticker" not in st.session_state:
+if "ticker" in st.query_params:
+    qp_ticker = st.query_params.get("ticker", "").strip().upper().replace(".IS", "")
+    if qp_ticker and qp_ticker != st.session_state.get("_last_synced_qp"):
+        st.session_state.selected_ticker = qp_ticker
+        st.session_state._last_synced_qp = qp_ticker
+elif "selected_ticker" not in st.session_state:
     st.session_state.selected_ticker = "AAPL"
+    st.session_state._last_synced_qp = "AAPL"
 
 is_dark = st.session_state.theme == "dark"
 
@@ -862,6 +868,8 @@ for idx, (sym, name, sec) in enumerate(chips):
         btn_type = "primary" if is_selected else "secondary"
         if st.button(btn_label, key=f"chip_{sym}", use_container_width=True, type=btn_type):
             st.session_state.selected_ticker = sym
+            st.session_state._last_synced_qp = sym
+            st.query_params["ticker"] = sym
             st.rerun()
 
 search_col1, search_col2, search_col3 = st.columns([2, 1, 1])
@@ -876,6 +884,9 @@ with search_col1:
         cleaned_up = custom_ticker_input.strip().upper().replace(".IS", "")
         if cleaned_up:
             st.session_state.selected_ticker = cleaned_up
+            st.session_state._last_synced_qp = cleaned_up
+            st.query_params["ticker"] = cleaned_up
+            st.rerun()
 
 with search_col2:
     report_btn = st.button("Analiz Raporunu Güncelle", type="primary", use_container_width=True)
@@ -975,20 +986,30 @@ with tabs[0]:
                     }} else {{
                         document.documentElement.classList.remove('light');
                     }}
-                    window.addEventListener('DOMContentLoaded', function() {{
+                    function triggerSync() {{
                         if (typeof selectTicker === 'function') {{
-                            selectTicker('{active_ticker}');
+                            selectTicker('{active_ticker}', true);
                         }}
-                    }});
+                    }}
+                    if (document.readyState === 'complete' || document.readyState === 'interactive') {{
+                        setTimeout(triggerSync, 20);
+                    }} else {{
+                        window.addEventListener('DOMContentLoaded', triggerSync);
+                    }}
                 }} catch (e) {{
                     console.error("Terminal senkronizasyon hatasi:", e);
                 }}
             }})();
         </script>
         """
-        html_content = html_content.replace("selectTicker('AAPL');", f"selectTicker('{active_ticker}');")
-        html_content = html_content.replace("</body>", f"{sync_script}\n</body>")
-        components.html(html_content, height=1050, scrolling=True)
+        html_content = html_content.replace("selectTicker('AAPL', true);", f"selectTicker('{active_ticker}', true);")
+        html_content = html_content.replace("selectTicker('AAPL');", f"selectTicker('{active_ticker}', true);")
+        html_content = html_content.replace("</body>", f"{sync_script}\n<!-- ticker:{active_ticker} theme:{theme_class} -->\n</body>")
+        components.html(
+            html_content,
+            height=1050,
+            scrolling=True,
+        )
     else:
         st.info("finsight_corporate_workspace.html dosyası bulunamadı.")
 
@@ -1418,28 +1439,180 @@ with tabs[2]:
             else:
                 report_source_title = "Kamuyu Aydınlatma Platformu (KAP)" if is_bist else "Form 10-K"
                 audit_source_title = "KAP resmi konsolide finansal bildiriminden" if is_bist else f"SEC EDGAR CIK #{sym_data['cik']} numaralı resmi raporundan"
+                q_clean = user_query.lower()
 
-                st.markdown(
-                    f"""
-                    <div class="fin-card">
-                        <div style="font-size: 13px; font-weight: 700; color: {accent_emerald}; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;">
-                            <i class="bi bi-patch-check-fill" style="margin-right: 6px;"></i>[DOĞRULANMIŞ CEVAP] {sym_data['name']} ({target_sym})
-                        </div>
-                        <div style="font-size: 13px; line-height: 1.8; color: {text_primary};">
-                            Şirketin en son bildirilen resmi <strong>{report_source_title}</strong> raporuna göre:<br/>
-                            • <i class="bi bi-cash-stack" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Toplam Gelir (Hasılat):</strong> {sym_data['revenue']} ({sym_data['revenue_yoy']})<br/>
-                            • <i class="bi bi-pie-chart-fill" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Brüt Kâr Marjı:</strong> {sym_data['gross_margin']} ({sym_data['gross_margin_status']})<br/>
-                            • <i class="bi bi-wallet2" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Konsolide Net Kâr:</strong> {sym_data['net_income']} ({sym_data['net_income_yoy']})<br/>
-                            • <i class="bi bi-graph-up" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Faaliyet Kâr Marjı:</strong> {sym_data['operating_margin']}<br/>
-                            • <i class="bi bi-arrow-up-right-circle" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Net Kâr Marjı:</strong> {sym_data['net_margin']}
-                        </div>
-                        <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid {card_border}; font-size: 11px; color: {text_secondary}; font-family: 'JetBrains Mono', monospace;">
-                            <i class="bi bi-shield-check" style="margin-right: 4px;"></i>Resmi Teyit: Bu değerler şirketin {audit_source_title} Python Decimal motoruyla hesaplanmış ve doğrulanmıştır.
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
+                is_segment_query = (
+                    any(k in q_clean for k in ["segment", "iş kol", "iş kolları", "gelir kaynak", "nereden kazan", "dağılım", "ürün", "hizmet"])
+                    or "item_1" in sections
                 )
+                is_mda_query = (
+                    any(k in q_clean for k in ["yönetim", "md&a", "bağlıyor", "marj analizi", "marj değişim", "açıklaması"])
+                    or "item_7" in sections
+                )
+                is_trend_query = any(k in q_clean for k in ["5 yıl", "trend", "cagr", "bileşik", "geçmiş yıl"])
+                is_net_income_split = any(k in q_clean for k in ["konsolide net kâr", "net kâr ayrımı", "faaliyet kârı ne kadar", "kâr kalemleri"])
+                is_audit_query = any(k in q_clean for k in ["düzeltilmiş", "revize", "10-k/a", "denetim", "audit"])
+                is_risk_query = any(k in q_clean for k in ["risk", "tehdit", "riskler", "risk factor"]) or "item_1a" in sections
+
+                if is_segment_query:
+                    st.markdown(
+                        f"""
+                        <div class="fin-card">
+                            <div style="font-size: 13px; font-weight: 700; color: {accent_emerald}; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-diagram-3-fill" style="margin-right: 6px;"></i>[DOĞRULANMIŞ CEVAP] {sym_data['name']} ({target_sym}) — İş Kolları & Gelir Segmentleri Dağılımı
+                            </div>
+                            <div style="font-size: 13px; line-height: 1.8; color: {text_primary}; margin-bottom: 12px;">
+                                <strong>Resmi Faaliyet Alanları ve Gelir Modeli:</strong><br/>
+                                {sym_data.get('business_summary', 'İş kolları resmi raporlardan derlenmektedir.')}
+                            </div>
+                            <div style="background: {table_header_bg}; border: 1px solid {card_border}; border-radius: 6px; padding: 10px 14px; font-size: 12px; line-height: 1.8; color: {text_primary};">
+                                <strong>Kilit Segment ve Hasılat Göstergeleri:</strong><br/>
+                                • <i class="bi bi-cash-stack" style="margin-right: 5px; color: {accent_blue};"></i><strong>Toplam Raporlanan Gelir:</strong> {sym_data['revenue']} ({sym_data['revenue_yoy']})<br/>
+                                • <i class="bi bi-pie-chart-fill" style="margin-right: 5px; color: {accent_blue};"></i><strong>Kârlılık / Brüt Marj:</strong> {sym_data['gross_margin']} ({sym_data['gross_margin_status']})<br/>
+                                • <i class="bi bi-wallet2" style="margin-right: 5px; color: {accent_blue};"></i><strong>Net Kâr Katkısı:</strong> {sym_data['net_income']} ({sym_data['net_income_yoy']})
+                            </div>
+                            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid {card_border}; font-size: 11px; color: {text_secondary}; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-shield-check" style="margin-right: 4px;"></i>Resmi Teyit: Bu bilgiler şirketin {report_source_title} resmi faaliyet ve segment açıklamasından doğrulanmıştır.
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                elif is_mda_query:
+                    st.markdown(
+                        f"""
+                        <div class="fin-card">
+                            <div style="font-size: 13px; font-weight: 700; color: {accent_emerald}; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-chat-square-quote-fill" style="margin-right: 6px;"></i>[DOĞRULANMIŞ CEVAP] {sym_data['name']} ({target_sym}) — Yönetimin MD&A Marj Açıklaması
+                            </div>
+                            <div style="font-size: 13px; line-height: 1.8; color: {text_primary}; margin-bottom: 12px;">
+                                <strong>Yönetim Kurulu & Üst Yönetim Değerlendirmesi:</strong><br/>
+                                {sym_data.get('mda_summary', 'Yönetim açıklaması resmi rapordan derlenmiştir.')}
+                            </div>
+                            <div style="background: {table_header_bg}; border: 1px solid {card_border}; border-radius: 6px; padding: 10px 14px; font-size: 12px; line-height: 1.8; color: {text_primary};">
+                                <strong>Yönetim Açıklamasını Destekleyen Finansal Gerçekleşmeler:</strong><br/>
+                                • <strong>Brüt Kâr Marjı:</strong> {sym_data['gross_margin']} ({sym_data['gross_margin_status']})<br/>
+                                • <strong>Faaliyet Kâr Marjı:</strong> {sym_data['operating_margin']}<br/>
+                                • <strong>Net Kâr Marjı:</strong> {sym_data['net_margin']}<br/>
+                                • <strong>Yıllık Ciro Artışı:</strong> {sym_data['revenue_yoy']}
+                            </div>
+                            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid {card_border}; font-size: 11px; color: {text_secondary}; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-shield-check" style="margin-right: 4px;"></i>Resmi Teyit: Açıklamalar şirketin {report_source_title} Yönetim Görüşü ve Analizi (MD&A) bölümünden alınmıştır.
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                elif is_trend_query:
+                    st.markdown(
+                        f"""
+                        <div class="fin-card">
+                            <div style="font-size: 13px; font-weight: 700; color: {accent_emerald}; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-graph-up" style="margin-right: 6px;"></i>[DOĞRULANMIŞ CEVAP] {sym_data['name']} ({target_sym}) — 5 Yıllık Gelir ve Kâr Trendi
+                            </div>
+                            <div style="font-size: 12px; color: {text_secondary}; margin-bottom: 10px;">
+                                Şirketin son 5 mali yılına ait resmi finansal bildirimlerden derlenen büyüme ve marj serisi:
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                    trend_rows = []
+                    for row in sym_data.get("table_rows", []):
+                        trend_rows.append({
+                            "Mali Yıl": row[0],
+                            "Hasılat (Gelir)": row[1],
+                            "Brüt Kâr Marjı": row[2],
+                            "Faaliyet Marjı": row[3],
+                            "Net Marj": row[4],
+                            "Resmi Belge / Kaynak": row[5] if len(row) > 5 else report_source_title,
+                        })
+                    if trend_rows:
+                        st.dataframe(trend_rows, use_container_width=True)
+                elif is_net_income_split:
+                    st.markdown(
+                        f"""
+                        <div class="fin-card">
+                            <div style="font-size: 13px; font-weight: 700; color: {accent_emerald}; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-pie-chart" style="margin-right: 6px;"></i>[DOĞRULANMIŞ CEVAP] {sym_data['name']} ({target_sym}) — Konsolide Kâr Kalemleri Ayrımı
+                            </div>
+                            <div style="font-size: 13px; line-height: 1.8; color: {text_primary};">
+                                Şirketin resmi <strong>{report_source_title}</strong> tablosuna göre konsolide kâr kalemleri ayrımı:<br/>
+                                • <i class="bi bi-wallet2" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Konsolide Net Kâr:</strong> {sym_data['net_income']} ({sym_data['net_income_yoy']})<br/>
+                                • <i class="bi bi-graph-up" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Faaliyet Kâr Marjı:</strong> {sym_data['operating_margin']}<br/>
+                                • <i class="bi bi-pie-chart-fill" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Brüt Kâr / ROE Marjı:</strong> {sym_data['gross_margin']} ({sym_data['gross_margin_status']})<br/>
+                                • <i class="bi bi-cash-stack" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Toplam Gelir (Hasılat):</strong> {sym_data['revenue']} ({sym_data['revenue_yoy']})
+                            </div>
+                            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid {card_border}; font-size: 11px; color: {text_secondary}; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-shield-check" style="margin-right: 4px;"></i>Resmi Teyit: Rakamlar şirketin {audit_source_title} Python Decimal motoruyla hesaplanmış ve doğrulanmıştır.
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                elif is_audit_query:
+                    st.markdown(
+                        f"""
+                        <div class="fin-card">
+                            <div style="font-size: 13px; font-weight: 700; color: {accent_emerald}; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-file-earmark-check-fill" style="margin-right: 6px;"></i>[DOĞRULANMIŞ CEVAP] {sym_data['name']} ({target_sym}) — Resmi Rapor ve Denetim Teyidi
+                            </div>
+                            <div style="font-size: 13px; line-height: 1.8; color: {text_primary}; margin-bottom: 10px;">
+                                <strong>Denetçi ve Revizyon Notu:</strong><br/>
+                                {sym_data.get('audit_note', 'Rapor verileri resmi kayıtlardan doğrulanmıştır.')}
+                            </div>
+                            <div style="background: {table_header_bg}; border: 1px solid {card_border}; border-radius: 6px; padding: 10px 14px; font-size: 12px; line-height: 1.8; color: {text_primary};">
+                                • <strong>Dönem:</strong> {sym_data['period']}<br/>
+                                • <strong>Teyit Edilen Hasılat:</strong> {sym_data['revenue']}<br/>
+                                • <strong>Teyit Edilen Net Kâr:</strong> {sym_data['net_income']}<br/>
+                                • <strong>Resmi Belge No / Kaynak:</strong> {report_source_title}
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                elif is_risk_query:
+                    st.markdown(
+                        f"""
+                        <div class="fin-card">
+                            <div style="font-size: 13px; font-weight: 700; color: {accent_amber}; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-exclamation-triangle-fill" style="margin-right: 6px;"></i>[DOĞRULANMIŞ CEVAP] {sym_data['name']} ({target_sym}) — Temel Risk Faktörleri
+                            </div>
+                            <div style="font-size: 13px; line-height: 1.8; color: {text_primary}; margin-bottom: 10px;">
+                                Şirketin resmi <strong>{report_source_title}</strong> raporunda beyan ettiği başlıca risk faktörleri:<br/>
+                                <div style="white-space: pre-line; margin-top: 6px; padding: 10px; background: {table_header_bg}; border-radius: 6px; font-size: 12px; line-height: 1.7;">
+{sym_data.get('risks_summary', 'Risk faktörleri resmi rapordan derlenmiştir.')}
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid {card_border}; font-size: 11px; color: {text_secondary}; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-shield-check" style="margin-right: 4px;"></i>Resmi Teyit: Risk maddeleri şirketin resmi {report_source_title} bildiriminden alınmıştır.
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                else:
+                    st.markdown(
+                        f"""
+                        <div class="fin-card">
+                            <div style="font-size: 13px; font-weight: 700; color: {accent_emerald}; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-patch-check-fill" style="margin-right: 6px;"></i>[DOĞRULANMIŞ CEVAP] {sym_data['name']} ({target_sym}) — Hasılat ve Kârlılık Özeti
+                            </div>
+                            <div style="font-size: 13px; line-height: 1.8; color: {text_primary};">
+                                Şirketin en son bildirilen resmi <strong>{report_source_title}</strong> raporuna göre:<br/>
+                                • <i class="bi bi-cash-stack" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Toplam Gelir (Hasılat):</strong> {sym_data['revenue']} ({sym_data['revenue_yoy']})<br/>
+                                • <i class="bi bi-pie-chart-fill" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Brüt Kâr Marjı:</strong> {sym_data['gross_margin']} ({sym_data['gross_margin_status']})<br/>
+                                • <i class="bi bi-wallet2" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Konsolide Net Kâr:</strong> {sym_data['net_income']} ({sym_data['net_income_yoy']})<br/>
+                                • <i class="bi bi-graph-up" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Faaliyet Kâr Marjı:</strong> {sym_data['operating_margin']}<br/>
+                                • <i class="bi bi-arrow-up-right-circle" style="margin-right: 5px; color: {accent_emerald};"></i><strong>Net Kâr Marjı:</strong> {sym_data['net_margin']}
+                            </div>
+                            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid {card_border}; font-size: 11px; color: {text_secondary}; font-family: 'JetBrains Mono', monospace;">
+                                <i class="bi bi-shield-check" style="margin-right: 4px;"></i>Resmi Teyit: Bu değerler şirketin {audit_source_title} Python Decimal motoruyla hesaplanmış ve doğrulanmıştır.
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
 
 
 with tabs[3]:
